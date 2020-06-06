@@ -23,22 +23,14 @@ public class SplashScreen extends JWindow {
         JPanel content = (JPanel) getContentPane();
         content.setBackground(Color.BLACK);
 
-        // Set the window's bounds, centering the window
-        int width = 500;
-        int height = 250;
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (screen.width - width) / 2;
-        int y = (screen.height - height) / 2;
-        setBounds(x, y, width, height);
+        SetTheWindowBound();
+        BuildTheSplashScreen(content);
+        Display(content);
+        dispose();
 
-        // Build the splash screen
-        JLabel copyrt = new JLabel("***Created by Biraj, Ganesh & Madhav***", JLabel.CENTER);
-        copyrt.setFont(new Font("Sans-Serif", Font.BOLD, 14));
-        copyrt.setForeground(Color.WHITE);
-        content.add(copyrt, BorderLayout.SOUTH);
-        Color clr = new Color(255, 100, 100);
-        content.setBorder(BorderFactory.createLineBorder(clr, 5));
+    }
 
+    private void Display(JPanel content) {
         JLabel label = new JLabel("", JLabel.CENTER);
         content.add(label);
         setVisible(true);
@@ -46,8 +38,6 @@ public class SplashScreen extends JWindow {
         for (int i = 0; i < 10; i++) {
 
             label.setIcon(images[i]);
-
-
             // Display it
             label.setVisible(true);
 
@@ -56,19 +46,31 @@ public class SplashScreen extends JWindow {
                 Thread.sleep(duration);
             } catch (Exception e) {
             }
-
             if (i == 9) {
                 try {
                     Thread.sleep(5 * duration);
                 } catch (Exception e) {
                 }
             }
-
             label.setVisible(false);
-
-
         }
-        dispose();
+    }
 
+    private void BuildTheSplashScreen(JPanel content) {
+        JLabel copyrt = new JLabel("***Created by Biraj, Ganesh & Madhav***", JLabel.CENTER);
+        copyrt.setFont(new Font("Sans-Serif", Font.BOLD, 14));
+        copyrt.setForeground(Color.WHITE);
+        content.add(copyrt, BorderLayout.SOUTH);
+        Color clr = new Color(255, 100, 100);
+        content.setBorder(BorderFactory.createLineBorder(clr, 5));
+    }
+
+    private void SetTheWindowBound() {
+        int width = 500;
+        int height = 250;
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screen.width - width) / 2;
+        int y = (screen.height - height) / 2;
+        setBounds(x, y, width, height);
     }
 }

@@ -388,7 +388,7 @@ public class MainUI extends JFrame {
 //          }
 
             if (MouseExitedMenu == newgame) {
-                   newgame.setIcon(Newgame);
+                newgame.setIcon(Newgame);
             }
 
             if (MouseExitedMenu == options) {
@@ -633,3 +633,4 @@ public class MainUI extends JFrame {
         bluechess = new ImageIcon(getClass().getResource("images2/bluechess.png"));
     }
 }
+

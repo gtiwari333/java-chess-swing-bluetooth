@@ -242,15 +242,8 @@ public class MainUI extends JFrame {
 
         public void mouseReleased(MouseEvent e) {
             //throw new UnsupportedOperationException("Not supported yet.");
-            //switch-case문으로 바꾸려고 하였으나 변수타입이 JLabel이라서 switch-case문에 적용되지 않아 if문으로 했습니다.
 
             JLabel MouseReleasedMenu = (JLabel)e.getSource();
-
-            //수행전 :
-//            if(e.getSource() == newgame){
-//                mainpanel.setVisible(false);
-//                subpanel.setVisible(true);
-//            }
 
             if (MouseReleasedMenu == newgame) {
                 mainpanel.setVisible(false);
@@ -328,13 +321,6 @@ public class MainUI extends JFrame {
 
             JLabel MouseEnteredMenu = (JLabel)e.getSource();
 
-            //수행전 :
-            //if(MouseEnteredMenu.getSource() == newgame){
-            //      newgame.setIcon(OnMouseNewgame);
-            //}
-
-            //switch-case문으로 바꾸려고 하였으나 변수타입이 JLabel이라서 switch-case문에 적용되지 않아 if문으로 했습니다.
-
             if (MouseEnteredMenu == newgame) {
                 newgame.setIcon(OnMouseNewgame);
             }
@@ -379,13 +365,8 @@ public class MainUI extends JFrame {
 
         public void mouseExited(MouseEvent e) {
             //throw new UnsupportedOperationException("Not supported yet.");
-            //switch-case문으로 바꾸려고 하였으나 변수타입이 JLabel이라서 switch-case문에 적용되지 않아 if문으로 했습니다.
 
             JLabel MouseExitedMenu = (JLabel)e.getSource();
-
-//          if (e.getSource() == newgame) {
-//              newgame.setIcon(Newgame);
-//          }
 
             if (MouseExitedMenu == newgame) {
                 newgame.setIcon(Newgame);

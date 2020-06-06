@@ -1,5 +1,3 @@
-//chess board
-
 import chess.PaintInstruction;
 
 import java.awt.*;
@@ -17,8 +15,8 @@ public class ChessBoard extends Canvas {
 
     public void paint(Graphics g) {
         System.err.println("chessboard, paint() being running");
-        if (vecPaintInstructions.size() == 0) {
-
+        boolean NoInstructions= vecPaintInstructions.size() == 0; //refect
+        if (NoInstructions) {
             currentInstruction = new PaintInstruction(0, 0, 8);
             vecPaintInstructions.addElement(currentInstruction);
 
@@ -27,7 +25,8 @@ public class ChessBoard extends Canvas {
         g.setColor(new Color(51, 51, 51));
         g.fillRect(50, 450, 450, 50); //Paint over the current status text
 
-        for (int i = 0; i < vecPaintInstructions.size(); i++) {
+        int num_of_PaintInstructions=vecPaintInstructions.size();//refect
+        for (int i = 0; i <num_of_PaintInstructions; i++) {
             currentInstruction = vecPaintInstructions.elementAt(i);
             int startRow = currentInstruction.getStartRow();
             int startColumn = currentInstruction.getStartColumn();
@@ -49,24 +48,18 @@ public class ChessBoard extends Canvas {
 
     private void drawTile(int row, int column, Graphics g) {
         //todo: add the cell labels A-H:1-8
-        if ((row + 1) % 2 == 0) {
-
-            if ((column + 1) % 2 == 0) {
-                g.setColor(new Color(255, 255, 255)); //white
-            } else {
-                g.setColor(new Color(165, 130, 95)); //black
-            }
-
-        } else {
-
-            if ((column + 1) % 2 == 0) {
-                g.setColor(new Color(165, 130, 95));
-            } else {
-                g.setColor(new Color(255, 255, 255));
-            }
-
-        }
-
+        boolean RowAndColEven=((row + 1) % 2 == 0)&&((column + 1) % 2 == 0);
+        boolean RowIsEvenColIsOdd=((row + 1) % 2 == 0)&&((column + 1) % 2 != 0);
+        boolean RowIsOddColIsEven=((row + 1) % 2 != 0)&&((column + 1) % 2 == 0);
+        boolean RowAndColOdd=((row + 1) % 2 != 0)&&((column + 1) % 2 != 0);
+        if(RowAndColEven)
+            g.setColor(new Color(255, 255, 255));
+        if(RowIsEvenColIsOdd)
+            g.setColor(new Color(165, 130, 95));
+        if(RowIsOddColIsEven)
+            g.setColor(new Color(165, 130, 95));
+        if(RowAndColOdd)
+            g.setColor(new Color(255, 255, 255));
         g.fillRect((5 + (column * 50)), (5 + (row * 50)), 50, 50);
 
     }

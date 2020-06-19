@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class WindowChessGameSingle extends ChessBoard implements MouseListener, MouseMotionListener {
+public class WindowChessGameSingle extends ChessBoard  {
 
     private final int refreshRate = 5; //Amount of pixels moved before screen is refreshed
     private final ImageIcon[][] imgPlayer = new ImageIcon[2][6];
@@ -33,10 +33,17 @@ public class WindowChessGameSingle extends ChessBoard implements MouseListener, 
     private int moveCount = 0;
     private final String[] moveRecord = new String[500];
 
+    private boolean result=false;
+    private int newdesrow,newdescol=0;
+
+    public String GetStrStatusMsg(){
+        return strStatusMsg;
+    }
+
     public WindowChessGameSingle() {
         super();
-        this.addMouseListener(this);
-        this.addMouseMotionListener(this);
+//        this.addMouseListener(this);
+//        this.addMouseMotionListener(this);
 
     }
 
@@ -182,7 +189,25 @@ public class WindowChessGameSingle extends ChessBoard implements MouseListener, 
 
     }
 
-    private void checkMove(int desRow, int desColumn) {
+    public void SetPieceBeingDragged (int num){
+        pieceBeingDragged = num;
+    }
+
+    public void SetStartRowCol (int row,int column){
+        startRow = row;
+        startColumn = column;
+    }
+
+    public boolean GetResult (){
+        return result;
+    }
+    public int getNewdesrow(){
+        return newdesrow;
+    }
+    public int getNewdescol(){
+        return newdescol;
+    }
+    public void checkMove(int desRow, int desColumn) {
 
         System.err.println("windowchessboard, Checkmove() being running");
         boolean legalMove = false;
@@ -196,6 +221,7 @@ public class WindowChessGameSingle extends ChessBoard implements MouseListener, 
 
                 case 0:
                     legalMove = pawnObject.legalMove(startRow, startColumn, desRow, desColumn, cellMatrix.getPlayerMatrix(), currentPlayer);
+
                     break;
                 case 1:
                     legalMove = rockObject.legalMove(startRow, startColumn, desRow, desColumn, cellMatrix.getPlayerMatrix());
@@ -216,7 +242,9 @@ public class WindowChessGameSingle extends ChessBoard implements MouseListener, 
             }
 
         }
-
+        if(legalMove){
+            result=true;
+        }
         //if legal
         if (legalMove) {
             System.err.println("legalmove, inside check");
@@ -228,433 +256,445 @@ public class WindowChessGameSingle extends ChessBoard implements MouseListener, 
                 case 0:
                     newDesRow = pawnObject.getDesRow();
                     newDesColumn = pawnObject.getDesColumn();
+                    newdesrow=newDesRow;
+                    newdescol=newDesColumn;
                     break;
                 case 1:
                     newDesRow = rockObject.getDesRow();
                     newDesColumn = rockObject.getDesColumn();
+                    newdesrow=newDesRow;
+                    newdescol=newDesColumn;
                     break;
                 case 2:
                     newDesRow = knightObject.getDesRow();
                     newDesColumn = knightObject.getDesColumn();
+                    newdesrow=newDesRow;
+                    newdescol=newDesColumn;
                     break;
                 case 3:
                     newDesRow = bishopObject.getDesRow();
                     newDesColumn = bishopObject.getDesColumn();
+                    newdesrow=newDesRow;
+                    newdescol=newDesColumn;
                     break;
                 case 4:
                     newDesRow = queenObject.getDesRow();
                     newDesColumn = queenObject.getDesColumn();
+                    newdesrow=newDesRow;
+                    newdescol=newDesColumn;
                     break;
                 case 5:
                     newDesRow = kingObject.getDesRow();
                     newDesColumn = kingObject.getDesColumn();
+                    newdesrow=newDesRow;
+                    newdescol=newDesColumn;
                     break;
 
             }
-
-//            현재 위치를 저장하는 변수를 따로 메소드 추출 해줍니다.
-//            PlayerMousePosition = cellMatrix.getPlayerCell(newDesRow, newDesColumn);
-//            PiecePosition = cellMatrix.getPieceCell(newDesRow, newDesColumn);
-
-            SaveCurrentPosition(newDesRow, newDesColumn);
-
-//            움직인 위치를 저장하는 변수를 따로 메소드 추출 해줍니다.
-//            cellMatrix.setPlayerCell(newDesRow, newDesColumn, currentPlayer);
-//            cellMatrix.setPieceCell(newDesRow, newDesColumn, pieceBeingDragged);
-
-            SetCurrentPosition(newDesRow, newDesColumn);
-
-//            현재 왕의 위치를 저장하는 변수를 따로 메소드 추출 해줍니다.
-//            KingRow = cellMatrix.getKingRow(currentPlayer);
-//            KingColumn = cellMatrix.getKingCol(currentPlayer);
-
-            GetKingPosition();
-
-            System.err.println("KingRow= " + KingRow + " KingCol= " + KingColumn);
-            kingSafe = cellMatrix.isKingSafe(currentPlayer, KingRow, KingColumn);
-
-            if (kingSafe) {
-                System.err.println("King is Safe");
-            } else {
-                System.err.println("King is NOT Safe");
-            }
-
-            if (kingSafe) {
-                SetCurrentPosition(newDesRow, newDesColumn);
-
-                if (cellMatrix.checkWinner(currentPlayer)) {
-
-                    hasWon = true;
-                    strStatusMsg = getPlayerMsg();
-
-                } else { //turn change
-
-                    if (currentPlayer == 1) {
-                        moveRecord[moveCount++] = strPlayerName[currentPlayer - 1] + ": " + startRow + "," + startColumn + "->" + desRow + "," + desColumn;
-                        currentPlayer = 2;
-                    } else {
-                        moveRecord[moveCount++] = strPlayerName[currentPlayer - 1] + ": " + startRow + "," + startColumn + "->" + desRow + "," + desColumn;
-                        currentPlayer = 1;
-                    }
-
-
-                    strStatusMsg = getPlayerMsg();
-
-                }
-            } else {
-                unsucessfullDrag();
-
-                cellMatrix.setPlayerCell(newDesRow, newDesColumn, PlayerMousePosition);
-                cellMatrix.setPieceCell(newDesRow, newDesColumn, PiecePosition);
-
-                strStatusMsg = "" + strPlayerName[currentPlayer - 1] + ", Your King is checked";
-                repaint();
-            }
-
-        } else {
-
-            switch (pieceBeingDragged) {
-
-                case 0:
-                    strStatusMsg = pawnObject.getErrorMsg();
-                    break;
-                case 1:
-                    strStatusMsg = rockObject.getErrorMsg();
-                    break;
-                case 2:
-                    strStatusMsg = knightObject.getErrorMsg();
-                    break;
-                case 3:
-                    strStatusMsg = bishopObject.getErrorMsg();
-                    break;
-                case 4:
-                    strStatusMsg = queenObject.getErrorMsg();
-                    break;
-                case 5:
-                    strStatusMsg = kingObject.getErrorMsg();
-                    break;
-
-            }
-
-            unsucessfullDrag();
-
+//
+////            현재 위치를 저장하는 변수를 따로 메소드 추출 해줍니다.
+////            PlayerMousePosition = cellMatrix.getPlayerCell(newDesRow, newDesColumn);
+////            PiecePosition = cellMatrix.getPieceCell(newDesRow, newDesColumn);
+//
+//            SaveCurrentPosition(newDesRow, newDesColumn);
+//
+////            움직인 위치를 저장하는 변수를 따로 메소드 추출 해줍니다.
+////            cellMatrix.setPlayerCell(newDesRow, newDesColumn, currentPlayer);
+////            cellMatrix.setPieceCell(newDesRow, newDesColumn, pieceBeingDragged);
+//
+//            SetCurrentPosition(newDesRow, newDesColumn);
+//
+////            현재 왕의 위치를 저장하는 변수를 따로 메소드 추출 해줍니다.
+////            KingRow = cellMatrix.getKingRow(currentPlayer);
+////            KingColumn = cellMatrix.getKingCol(currentPlayer);
+//
+//            GetKingPosition();
+//
+//            System.err.println("KingRow= " + KingRow + " KingCol= " + KingColumn);
+//            kingSafe = cellMatrix.isKingSafe(currentPlayer, KingRow, KingColumn);
+//
+//            if (kingSafe) {
+//                System.err.println("King is Safe");
+//            } else {
+//                System.err.println("King is NOT Safe");
+//            }
+//
+//            if (kingSafe) {
+//                SetCurrentPosition(newDesRow, newDesColumn);
+//
+//                if (cellMatrix.checkWinner(currentPlayer)) {
+//
+//                    hasWon = true;
+//                    strStatusMsg = getPlayerMsg();
+//
+//                } else { //turn change
+//
+//                    if (currentPlayer == 1) {
+//                        moveRecord[moveCount++] = strPlayerName[currentPlayer - 1] + ": " + startRow + "," + startColumn + "->" + desRow + "," + desColumn;
+//                        currentPlayer = 2;
+//                    } else {
+//                        moveRecord[moveCount++] = strPlayerName[currentPlayer - 1] + ": " + startRow + "," + startColumn + "->" + desRow + "," + desColumn;
+//                        currentPlayer = 1;
+//                    }
+//
+//
+//                    strStatusMsg = getPlayerMsg();
+//
+//                }
+//            } else {
+//                unsucessfullDrag();
+//
+//                cellMatrix.setPlayerCell(newDesRow, newDesColumn, PlayerMousePosition);
+//                cellMatrix.setPieceCell(newDesRow, newDesColumn, PiecePosition);
+//
+//                strStatusMsg = "" + strPlayerName[currentPlayer - 1] + ", Your King is checked";
+//                repaint();
+//            }
+//
+//        } else {
+//
+//            switch (pieceBeingDragged) {
+//
+//                case 0:
+//                    strStatusMsg = pawnObject.getErrorMsg();
+//                    break;
+//                case 1:
+//                    strStatusMsg = rockObject.getErrorMsg();
+//                    break;
+//                case 2:
+//                    strStatusMsg = knightObject.getErrorMsg();
+//                    break;
+//                case 3:
+//                    strStatusMsg = bishopObject.getErrorMsg();
+//                    break;
+//                case 4:
+//                    strStatusMsg = queenObject.getErrorMsg();
+//                    break;
+//                case 5:
+//                    strStatusMsg = kingObject.getErrorMsg();
+//                    break;
+//
+//            }
+//
+//            unsucessfullDrag();
+//
         }
 
-    }
-
-    private void GetKingPosition() {
-        KingRow = cellMatrix.getKingRow(currentPlayer);
-        KingColumn = cellMatrix.getKingCol(currentPlayer);
-    }
-
-    private void SetCurrentPosition(int newDesRow, int newDesColumn) {
-        cellMatrix.setPlayerCell(newDesRow, newDesColumn, currentPlayer);
-        cellMatrix.setPieceCell(newDesRow, newDesColumn, pieceBeingDragged);
-    }
-
-    private void SaveCurrentPosition(int newDesRow, int newDesColumn) {
-        PlayerMousePosition = cellMatrix.getPlayerCell(newDesRow, newDesColumn);
-        PiecePosition = cellMatrix.getPieceCell(newDesRow, newDesColumn);
-    }
-
-    private boolean isCheckMate(int curPlayer) {
-
-        KingRow = cellMatrix.getKingRow(curPlayer);
-        KingColumn = cellMatrix.getKingCol(curPlayer);
-
-
-        boolean South = true, WestSouth = true, West = true, NorthWest = true, North = true, NorthEast = true, East = true, SouthEast = true;
-
-        South = TestSouth(curPlayer);
-
-        WestSouth = TestWestSouth(curPlayer);
-
-        West = TestWest(curPlayer);
-
-        NorthWest = TestNorthWest(curPlayer);
-
-        North = TestNorth(curPlayer);
-
-        NorthEast = TestNorthEast(curPlayer);
-
-        East = TestEast(curPlayer);
-
-        SouthEast = TestSouthEast(curPlayer);
-
-
-        if (South && WestSouth && West && NorthWest && North && NorthEast && East && SouthEast) {
-            return true;
-        }
-
-
-        return false;
-    }
-
-    private boolean TestSouthEast(int curPlayer) {
-        int NewKingRow = KingRow + 1;
-        int NewKingColumn = KingColumn + 1;
-        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
-        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
-        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
-            if (!CanLegalMove || !isSafe) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    private boolean TestEast(int curPlayer) {
-        int NewKingRow = KingRow;
-        int NewKingColumn = KingColumn + 1;
-        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());;
-        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);;
-        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
-            if (!CanLegalMove || !isSafe) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    private boolean TestNorthEast(int curPlayer) {
-        int NewKingRow = KingRow - 1;
-        int NewKingColumn = KingColumn + 1;
-        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
-        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
-        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
-
-            if (!CanLegalMove || !isSafe) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    private boolean TestNorth(int curPlayer) {
-        int NewKingRow = KingRow - 1;
-        int NewKingColumn = KingColumn;
-        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
-        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
-        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
-
-            if (!CanLegalMove || !isSafe) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    private boolean TestNorthWest(int curPlayer) {
-        int NewKingRow = KingRow - 1;
-        int NewKingColumn = KingColumn - 1;
-        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
-        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
-        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
-
-            if (!CanLegalMove || !isSafe) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    private boolean TestWest(int curPlayer) {
-        int NewKingRow = KingRow;
-        int NewKingColumn = KingColumn - 1;
-        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
-        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
-        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
-
-            if (!CanLegalMove || !isSafe) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    private boolean TestWestSouth(int curPlayer) {
-        int NewKingRow = KingRow + 1;
-        int NewKingColumn = KingColumn - 1;
-        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
-        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
-        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
-
-            if (!CanLegalMove || !isSafe) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    private Boolean TestSouth(int curPlayer) {
-        int NewKingRow = KingRow + 1;
-        int NewKingColumn = KingColumn;
-        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
-        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
-        NewKingRow = KingRow + 1;
-        NewKingColumn = KingColumn;
-        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
-
-            if (!CanLegalMove || !isSafe) {
-                return true;
-            } else {
-               return false;
-            }
-        }
-        return false;
-    }
-
-    private void unsucessfullDrag() {
-        System.err.println("unsuccessfulDrag");
-        cellMatrix.setPieceCell(startRow, startColumn, pieceBeingDragged);
-        cellMatrix.setPlayerCell(startRow, startColumn, currentPlayer);
-
-    }
-
-    private void updatePaintInstructions(int desRow, int desColumn) {
-        System.err.println("updatePaintInstructions");
-        currentInstruction = new PaintInstruction(startRow, startColumn, 1);
-        vecPaintInstructions.addElement(currentInstruction);
-        currentInstruction = new PaintInstruction(desRow, desColumn);
-        vecPaintInstructions.addElement(currentInstruction);
-
-    }
-
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    public void mouseExited(MouseEvent e) {
-        mouseReleased(e);
-    }
-
-    public void mousePressed(MouseEvent e) {
-        System.err.println("windowchessboard, mousepressed() being running");
-        if (!hasWon && !firstTime) {
-
-            int x = e.getX();
-            int y = e.getY();
-
-            boolean isCorrectBounds = (x > 5 && x < 405) && (y > 5 && y < 405); // 정해진 범위 안에 있는지 확인하는 조건을 boolean 변수로 선언해준다.
-
-            if (isCorrectBounds) //in the correct bounds
-            {
-                //find startRow and StartColumn from where the player clicks on the board
-                startRow = findWhichTileSelected(y);
-                startColumn = findWhichTileSelected(x);
-                System.err.println("START  " + startRow + " ," + startColumn);
-
-                boolean isCorrectCurrentPlayerTurn = cellMatrix.getPlayerCell(startRow, startColumn) == currentPlayer;
-                //현재 플레이어의 턴이 맞는지 확인해주는 조건을 boolean 변수로 선언해준다.
-                if (isCorrectCurrentPlayerTurn) {
-
-                    pieceBeingDragged = cellMatrix.getPieceCell(startRow, startColumn);
-                    cellMatrix.setPieceCell(startRow, startColumn, 6);
-                    cellMatrix.setPlayerCell(startRow, startColumn, 0);
-                    isDragging = true;
-
-                } else {
-                    isDragging = false;
-                }
-
-            }
-
-        }
-
-    }
-
-    public void mouseReleased(MouseEvent e) {
-        System.err.println("mouseReleased");
-
-        if (!drag) {
-            cellMatrix.setPieceCell(startRow, startColumn, pieceBeingDragged);
-            cellMatrix.setPlayerCell(startRow, startColumn, currentPlayer);
-        }
-
-        if (isDragging) {
-
-            isDragging = false;
-
-            int desRow = findWhichTileSelected(currentY);
-            int desColumn = findWhichTileSelected(currentX);
-            checkMove(desRow, desColumn);
-
-            GetKingPosition();
-
-            System.err.println("KingRow= " + KingRow + " KingCol= " + KingColumn);
-            kingSafe = cellMatrix.isKingSafe(currentPlayer, KingRow, KingColumn);
-
-            if (kingSafe) {
-                System.err.println("King is Safe");
-            } else {
-                strStatusMsg = "" + strPlayerName[currentPlayer - 1] + " move, Your King is checked";
-                System.err.println("King is NOT Safe");
-            }
-
-            if (isCheckMate(currentPlayer)) {
-                strStatusMsg = "CHECKMATE";
-            }
-
-            repaint();
-
-        }
-
-    }
-
-    public void mouseDragged(MouseEvent e) {
-        drag = true;
-        if (isDragging) {
-
-            int x = e.getX();
-            int y = e.getY();
-            boolean isCorrectBound = (x > 5 && x < 405) && (y > 5 && y < 405);
-            //정해진 범위 안에 있는지 확인하는 조건을 boolean 변수로 선언해준다.
-            if (isCorrectBound) //in the correct bounds
-            {
-
-                if (refreshCounter >= refreshRate) {
-
-                    currentX = x;
-                    currentY = y;
-                    refreshCounter = 0;
-                    int desRow = findWhichTileSelected(currentY);
-                    int desColumn = findWhichTileSelected(currentX);
-
-                    updatePaintInstructions(desRow, desColumn);
-
-                    repaint();
-
-                } else {
-                    refreshCounter++;
-                }
-
-            } else {
-                isDragging = false;
-                unsucessfullDrag();
-                repaint();
-            }
-
-        }
-
-    }
-
-    public void mouseMoved(MouseEvent e) {
-    }
+   }
+
+//    private void GetKingPosition() {
+//        KingRow = cellMatrix.getKingRow(currentPlayer);
+//        KingColumn = cellMatrix.getKingCol(currentPlayer);
+//    }
+//
+//    private void SetCurrentPosition(int newDesRow, int newDesColumn) {
+//        cellMatrix.setPlayerCell(newDesRow, newDesColumn, currentPlayer);
+//        cellMatrix.setPieceCell(newDesRow, newDesColumn, pieceBeingDragged);
+//    }
+//
+//    private void SaveCurrentPosition(int newDesRow, int newDesColumn) {
+//        PlayerMousePosition = cellMatrix.getPlayerCell(newDesRow, newDesColumn);
+//        PiecePosition = cellMatrix.getPieceCell(newDesRow, newDesColumn);
+//    }
+//
+//    private boolean isCheckMate(int curPlayer) {
+//
+//        KingRow = cellMatrix.getKingRow(curPlayer);
+//        KingColumn = cellMatrix.getKingCol(curPlayer);
+//
+//
+//        boolean South = true, WestSouth = true, West = true, NorthWest = true, North = true, NorthEast = true, East = true, SouthEast = true;
+//
+//        South = TestSouth(curPlayer);
+//
+//        WestSouth = TestWestSouth(curPlayer);
+//
+//        West = TestWest(curPlayer);
+//
+//        NorthWest = TestNorthWest(curPlayer);
+//
+//        North = TestNorth(curPlayer);
+//
+//        NorthEast = TestNorthEast(curPlayer);
+//
+//        East = TestEast(curPlayer);
+//
+//        SouthEast = TestSouthEast(curPlayer);
+//
+//
+//        if (South && WestSouth && West && NorthWest && North && NorthEast && East && SouthEast) {
+//            return true;
+//        }
+//
+//
+//        return false;
+//    }
+//
+//    private boolean TestSouthEast(int curPlayer) {
+//        int NewKingRow = KingRow + 1;
+//        int NewKingColumn = KingColumn + 1;
+//        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
+//        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
+//        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
+//            if (!CanLegalMove || !isSafe) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private boolean TestEast(int curPlayer) {
+//        int NewKingRow = KingRow;
+//        int NewKingColumn = KingColumn + 1;
+//        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());;
+//        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);;
+//        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
+//            if (!CanLegalMove || !isSafe) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private boolean TestNorthEast(int curPlayer) {
+//        int NewKingRow = KingRow - 1;
+//        int NewKingColumn = KingColumn + 1;
+//        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
+//        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
+//        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
+//
+//            if (!CanLegalMove || !isSafe) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private boolean TestNorth(int curPlayer) {
+//        int NewKingRow = KingRow - 1;
+//        int NewKingColumn = KingColumn;
+//        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
+//        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
+//        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
+//
+//            if (!CanLegalMove || !isSafe) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private boolean TestNorthWest(int curPlayer) {
+//        int NewKingRow = KingRow - 1;
+//        int NewKingColumn = KingColumn - 1;
+//        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
+//        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
+//        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
+//
+//            if (!CanLegalMove || !isSafe) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private boolean TestWest(int curPlayer) {
+//        int NewKingRow = KingRow;
+//        int NewKingColumn = KingColumn - 1;
+//        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
+//        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
+//        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
+//
+//            if (!CanLegalMove || !isSafe) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private boolean TestWestSouth(int curPlayer) {
+//        int NewKingRow = KingRow + 1;
+//        int NewKingColumn = KingColumn - 1;
+//        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
+//        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
+//        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
+//
+//            if (!CanLegalMove || !isSafe) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private Boolean TestSouth(int curPlayer) {
+//        int NewKingRow = KingRow + 1;
+//        int NewKingColumn = KingColumn;
+//        boolean CanLegalMove = kingObject.legalMove(KingRow, KingColumn, NewKingRow, NewKingColumn, cellMatrix.getPlayerMatrix());
+//        boolean isSafe = cellMatrix.isKingSafe(curPlayer, NewKingRow, NewKingColumn);
+//        NewKingRow = KingRow + 1;
+//        NewKingColumn = KingColumn;
+//        if (NewKingRow >= 0 && NewKingColumn >= 0 && NewKingRow <= 7 && NewKingColumn <= 8) {
+//
+//            if (!CanLegalMove || !isSafe) {
+//                return true;
+//            } else {
+//               return false;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private void unsucessfullDrag() {
+//        System.err.println("unsuccessfulDrag");
+//        cellMatrix.setPieceCell(startRow, startColumn, pieceBeingDragged);
+//        cellMatrix.setPlayerCell(startRow, startColumn, currentPlayer);
+//
+//    }
+//
+//    private void updatePaintInstructions(int desRow, int desColumn) {
+//        System.err.println("updatePaintInstructions");
+//        currentInstruction = new PaintInstruction(startRow, startColumn, 1);
+//        vecPaintInstructions.addElement(currentInstruction);
+//        currentInstruction = new PaintInstruction(desRow, desColumn);
+//        vecPaintInstructions.addElement(currentInstruction);
+//
+//    }
+//
+//    public void mouseClicked(MouseEvent e) {
+//    }
+//
+//    public void mouseEntered(MouseEvent e) {
+//    }
+//
+//    public void mouseExited(MouseEvent e) {
+//        mouseReleased(e);
+//    }
+//
+//    public void mousePressed(MouseEvent e) {
+//        System.err.println("windowchessboard, mousepressed() being running");
+//        if (!hasWon && !firstTime) {
+//
+//            int x = e.getX();
+//            int y = e.getY();
+//
+//            boolean isCorrectBounds = (x > 5 && x < 405) && (y > 5 && y < 405); // 정해진 범위 안에 있는지 확인하는 조건을 boolean 변수로 선언해준다.
+//
+//            if (isCorrectBounds) //in the correct bounds
+//            {
+//                //find startRow and StartColumn from where the player clicks on the board
+//                startRow = findWhichTileSelected(y);
+//                startColumn = findWhichTileSelected(x);
+//                System.err.println("START  " + startRow + " ," + startColumn);
+//
+//                boolean isCorrectCurrentPlayerTurn = cellMatrix.getPlayerCell(startRow, startColumn) == currentPlayer;
+//                //현재 플레이어의 턴이 맞는지 확인해주는 조건을 boolean 변수로 선언해준다.
+//                if (isCorrectCurrentPlayerTurn) {
+//
+//                    pieceBeingDragged = cellMatrix.getPieceCell(startRow, startColumn);
+//                    cellMatrix.setPieceCell(startRow, startColumn, 6);
+//                    cellMatrix.setPlayerCell(startRow, startColumn, 0);
+//                    isDragging = true;
+//
+//                } else {
+//                    isDragging = false;
+//                }
+//
+//            }
+//
+//        }
+//
+//    }
+//
+//    public void mouseReleased(MouseEvent e) {
+//        System.err.println("mouseReleased");
+//
+//        if (!drag) {
+//            cellMatrix.setPieceCell(startRow, startColumn, pieceBeingDragged);
+//            cellMatrix.setPlayerCell(startRow, startColumn, currentPlayer);
+//        }
+//
+//        if (isDragging) {
+//
+//            isDragging = false;
+//
+//            int desRow = findWhichTileSelected(currentY);
+//            int desColumn = findWhichTileSelected(currentX);
+//            checkMove(desRow, desColumn);
+//
+//            GetKingPosition();
+//
+//            System.err.println("KingRow= " + KingRow + " KingCol= " + KingColumn);
+//            kingSafe = cellMatrix.isKingSafe(currentPlayer, KingRow, KingColumn);
+//
+//            if (kingSafe) {
+//                System.err.println("King is Safe");
+//            } else {
+//                strStatusMsg = "" + strPlayerName[currentPlayer - 1] + " move, Your King is checked";
+//                System.err.println("King is NOT Safe");
+//            }
+//
+//            if (isCheckMate(currentPlayer)) {
+//                strStatusMsg = "CHECKMATE";
+//            }
+//
+//            repaint();
+//
+//        }
+//
+//    }
+//
+//    public void mouseDragged(MouseEvent e) {
+//        drag = true;
+//        if (isDragging) {
+//
+//            int x = e.getX();
+//            int y = e.getY();
+//            boolean isCorrectBound = (x > 5 && x < 405) && (y > 5 && y < 405);
+//            //정해진 범위 안에 있는지 확인하는 조건을 boolean 변수로 선언해준다.
+//            if (isCorrectBound) //in the correct bounds
+//            {
+//
+//                if (refreshCounter >= refreshRate) {
+//
+//                    currentX = x;
+//                    currentY = y;
+//                    refreshCounter = 0;
+//                    int desRow = findWhichTileSelected(currentY);
+//                    int desColumn = findWhichTileSelected(currentX);
+//
+//                    updatePaintInstructions(desRow, desColumn);
+//
+//                    repaint();
+//
+//                } else {
+//                    refreshCounter++;
+//                }
+//
+//            } else {
+//                isDragging = false;
+//                unsucessfullDrag();
+//                repaint();
+//            }
+//
+//        }
+//
+//    }
+//
+//    public void mouseMoved(MouseEvent e) {
+//    }
 
 }

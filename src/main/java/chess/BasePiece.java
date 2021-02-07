@@ -10,6 +10,7 @@ abstract class BasePiece {
     protected int finalDesRow = 0;
     protected int finalDesColumn = 0;
     protected String strErrorMsg = "";
+    protected String result="";
 
     //Method for checking the path to the destination and making sure nothing is in the way
 

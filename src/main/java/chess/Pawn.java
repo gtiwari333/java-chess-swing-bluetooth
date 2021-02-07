@@ -73,7 +73,7 @@ public class Pawn extends BasePiece {
         }
 
         if (legalMove) {
-
+            result="success";
             finalDesRow = desRow;
             finalDesColumn = desColumn;
 

@@ -211,24 +211,24 @@ public class MainUI extends JFrame {
     private JPanel subpanel;
     // End of variables declaration//GEN-END:variables
     protected Icon bluechess;
-    protected Icon newgame1;
-    protected Icon newgame2;
-    protected Icon options1;
-    protected Icon options2;
-    protected Icon help1;
-    protected Icon help2;
-    protected Icon about1;
-    protected Icon about2;
-    protected Icon exit1;
-    protected Icon exit2;
-    protected Icon single1;
-    protected Icon single2;
-    protected Icon host1;
-    protected Icon host2;
-    protected Icon join1;
-    protected Icon join2;
-    protected Icon back1;
-    protected Icon back2;
+    protected Icon Newgame; // 수행전 : newgame1
+    protected Icon OnMouseNewgame; // 수행전 : newgame2
+    protected Icon Options; // 수행전 : options1
+    protected Icon OnMouseOptions; // 수행전 : options2
+    protected Icon Help; // 수행전 : help1
+    protected Icon OnMouseHelp; // 수행전 : help2
+    protected Icon About; // 수행전 : about1
+    protected Icon OnMouseAbout; // 수행전 : about2
+    protected Icon Exit; // 수행전 : exit1
+    protected Icon OnMouseExit; // 수행전 : exit2
+    protected Icon Single; // 수행전 : single1
+    protected Icon OnMouseSingle; // 수행전 : single2
+    protected Icon Host; // 수행전 : host1
+    protected Icon OnMouseHost; // 수행전 : host2
+    protected Icon Join; // 수행전 : join1
+    protected Icon OnMouseJoin; // 수행전 : join2
+    protected Icon Back; // 수행전 : back1
+    protected Icon OnMouseBack; // 수행전 : back2
 
     private class MouseHandler implements MouseListener {
 
@@ -243,26 +243,28 @@ public class MainUI extends JFrame {
         public void mouseReleased(MouseEvent e) {
             //throw new UnsupportedOperationException("Not supported yet.");
 
-            if (e.getSource() == newgame) {
+            JLabel MouseReleasedMenu = (JLabel)e.getSource();
+
+            if (MouseReleasedMenu == newgame) {
                 mainpanel.setVisible(false);
                 subpanel.setVisible(true);
 
             }
 
-            if (e.getSource() == options) {
+            if (MouseReleasedMenu == options) {
             }
 
-            if (e.getSource() == help) {
+            if (MouseReleasedMenu == help) {
             }
 
-            if (e.getSource() == about) {
+            if (MouseReleasedMenu == about) {
             }
 
-            if (e.getSource() == exit) {
+            if (MouseReleasedMenu == exit) {
                 System.exit(0);
             }
 
-            if (e.getSource() == single) {
+            if (MouseReleasedMenu == single) {
                 JFrame main = new JFrame("Blue Chess Game Window"); //Title
                 main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -275,7 +277,7 @@ public class MainUI extends JFrame {
                 dispose();
             }
 
-            if (e.getSource() == join) {
+            if (MouseReleasedMenu == join) {
                 try {
                     JFrame main = new JFrame("Blue Chess Game Window"); //Title
                     main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -291,7 +293,7 @@ public class MainUI extends JFrame {
                 }
             }
 
-            if (e.getSource() == host) {
+            if (MouseReleasedMenu == host) {
                 try {
                     JFrame main = new JFrame("Blue Chess Game Window"); //Title
                     main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -307,7 +309,7 @@ public class MainUI extends JFrame {
                 }
             }
 
-            if (e.getSource() == back) {
+            if (MouseReleasedMenu == back) {
 
                 subpanel.setVisible(false);
                 mainpanel.setVisible(true);
@@ -317,43 +319,45 @@ public class MainUI extends JFrame {
         public void mouseEntered(MouseEvent e) {
             //throw new UnsupportedOperationException("Not supported yet.");
 
-            if (e.getSource() == newgame) {
-                newgame.setIcon(newgame2);
+            JLabel MouseEnteredMenu = (JLabel)e.getSource();
+
+            if (MouseEnteredMenu == newgame) {
+                newgame.setIcon(OnMouseNewgame);
             }
 
-            if (e.getSource() == options) {
-                options.setIcon(options2);
+            if (MouseEnteredMenu == options) {
+                options.setIcon(OnMouseOptions);
             }
 
-            if (e.getSource() == help) {
-                help.setIcon(help2);
+            if (MouseEnteredMenu == help) {
+                help.setIcon(OnMouseHelp);
             }
 
-            if (e.getSource() == about) {
-                about.setIcon(about2);
+            if (MouseEnteredMenu == about) {
+                about.setIcon(OnMouseAbout);
             }
 
-            if (e.getSource() == exit) {
-                exit.setIcon(exit2);
+            if (MouseEnteredMenu == exit) {
+                exit.setIcon(OnMouseExit);
             }
 
-            if (e.getSource() == single) {
-                single.setIcon(single2);
+            if (MouseEnteredMenu == single) {
+                single.setIcon(OnMouseSingle);
                 subpanel.setVisible(true);
             }
 
-            if (e.getSource() == host) {
-                host.setIcon(host2);
+            if (MouseEnteredMenu == host) {
+                host.setIcon(OnMouseHost);
                 subpanel.setVisible(true);
             }
 
-            if (e.getSource() == join) {
-                join.setIcon(join2);
+            if (MouseEnteredMenu == join) {
+                join.setIcon(OnMouseJoin);
                 subpanel.setVisible(true);
             }
 
-            if (e.getSource() == back) {
-                back.setIcon(back2);
+            if (MouseEnteredMenu == back) {
+                back.setIcon(OnMouseBack);
                 subpanel.setVisible(true);
             }
 
@@ -362,143 +366,130 @@ public class MainUI extends JFrame {
         public void mouseExited(MouseEvent e) {
             //throw new UnsupportedOperationException("Not supported yet.");
 
-            if (e.getSource() == newgame) {
-                newgame.setIcon(newgame1);
+            JLabel MouseExitedMenu = (JLabel)e.getSource();
+
+            if (MouseExitedMenu == newgame) {
+                newgame.setIcon(Newgame);
             }
 
-            if (e.getSource() == options) {
-                options.setIcon(options1);
+            if (MouseExitedMenu == options) {
+                options.setIcon(Options);
             }
 
-            if (e.getSource() == help) {
-                help.setIcon(help1);
+            if (MouseExitedMenu == help) {
+                help.setIcon(Help);
             }
 
-            if (e.getSource() == about) {
-                about.setIcon(about1);
+            if (MouseExitedMenu == about) {
+                about.setIcon(About);
             }
 
-            if (e.getSource() == exit) {
-                exit.setIcon(exit1);
+            if (MouseExitedMenu == exit) {
+                exit.setIcon(Exit);
             }
 
-            if (e.getComponent() == subpanel) {
+            if (e.getSource() == subpanel) {
                 subpanel.setVisible(false);
             }
 
-            if (e.getSource() == single) {
-                single.setIcon(single1);
+            if (MouseExitedMenu == single) {
+                single.setIcon(Single);
             }
 
-            if (e.getSource() == host) {
-                host.setIcon(host1);
+            if (MouseExitedMenu == host) {
+                host.setIcon(Host);
             }
 
-            if (e.getSource() == join) {
-                join.setIcon(join1);
+            if (MouseExitedMenu == join) {
+                join.setIcon(Join);
             }
 
-            if (e.getSource() == back) {
-                back.setIcon(back1);
+            if (MouseExitedMenu == back) {
+                back.setIcon(Back);
             }
         }
     }
 
     public void showMenu() {
+//      메소드를 추출하여 private 함수로 만들어서 수행합니다.
 
-        bluechess = new ImageIcon(getClass().getResource("images2/bluechess.png"));
+//      bluechess = new ImageIcon(getClass().getResource("images2/bluechess.png"));
+//
+//      Newgame = new ImageIcon(getClass().getResource("images2/newgame1.png")); //수행전 : newgame1
+//      OnMouseNewgame = new ImageIcon(getClass().getResource("images2/newgame2.png")); //수행전 : newgame2
+//      Options = new ImageIcon(getClass().getResource("images2/options1.png")); // 수행전 : options1
+//      OnMouseOptions = new ImageIcon(getClass().getResource("images2/options2.png")); // 수행전 : options2
+//      Help = new ImageIcon(getClass().getResource("images2/help1.png")); // 수행전 : help1
+//      OnMouseHelp = new ImageIcon(getClass().getResource("images2/help2.png")); // 수행전 : help2
+//      About = new ImageIcon(getClass().getResource("images2/about1.png")); // 수행전 : about1
+//      OnMouseAbout = new ImageIcon(getClass().getResource("images2/about2.png")); // 수행전 : about2
+//      Exit = new ImageIcon(getClass().getResource("images2/exit1.png")); // 수행전 : exit1
+//      OnMouseExit = new ImageIcon(getClass().getResource("images2/exit2.png")); // 수행전 : exit2
+//
+//      Single = new ImageIcon(getClass().getResource("images2/single1.png")); // 수행전 : single1
+//      OnMouseSingle = new ImageIcon(getClass().getResource("images2/single2.png")); // 수행전 : single2
+//      Host = new ImageIcon(getClass().getResource("images2/host1.png")); // 수행전 : host1
+//      OnMouseHost = new ImageIcon(getClass().getResource("images2/host2.png")); // 수행전 : host2
+//      Join = new ImageIcon(getClass().getResource("images2/join1.png")); // 수행전 : join1
+//      OnMouseJoin = new ImageIcon(getClass().getResource("images2/join2.png")); // 수행전 : join2
+//      Back = new ImageIcon(getClass().getResource("images2/back1.png")); // 수행전 : back1
+//      OnMouseBack = new ImageIcon(getClass().getResource("images2/back2.png")); // 수행전 : back2
 
-        newgame1 = new ImageIcon(getClass().getResource("images2/newgame1.png"));
-        newgame2 = new ImageIcon(getClass().getResource("images2/newgame2.png"));
-        options1 = new ImageIcon(getClass().getResource("images2/options1.png"));
-        options2 = new ImageIcon(getClass().getResource("images2/options2.png"));
-        help1 = new ImageIcon(getClass().getResource("images2/help1.png"));
-        help2 = new ImageIcon(getClass().getResource("images2/help2.png"));
-        about1 = new ImageIcon(getClass().getResource("images2/about1.png"));
-        about2 = new ImageIcon(getClass().getResource("images2/about2.png"));
-        exit1 = new ImageIcon(getClass().getResource("images2/exit1.png"));
-        exit2 = new ImageIcon(getClass().getResource("images2/exit2.png"));
 
-        single1 = new ImageIcon(getClass().getResource("images2/single1.png"));
-        single2 = new ImageIcon(getClass().getResource("images2/single2.png"));
-        host1 = new ImageIcon(getClass().getResource("images2/host1.png"));
-        host2 = new ImageIcon(getClass().getResource("images2/host2.png"));
-        join1 = new ImageIcon(getClass().getResource("images2/join1.png"));
-        join2 = new ImageIcon(getClass().getResource("images2/join2.png"));
-        back1 = new ImageIcon(getClass().getResource("images2/back1.png"));
-        back2 = new ImageIcon(getClass().getResource("images2/back2.png"));
+        ShowBlueChessIcon();
+
+        ShowMenuPage();
+
+        ShowModePage();
 
 
         MouseHandler handler = new MouseHandler();
 
-        mainpanel.setBounds(20, 100, 255, 250);
-        add(mainpanel);
+//      생성 함수 또한 메소드로 추출하여 코드를 간단하게 해줍니다.
 
-        subpanel.setBounds(20, 100, 255, 250);
-        add(subpanel);
+//        수행전 :
+//        mainpanel.setBounds(20, 100, 255, 250);
+//        add(mainpanel);
+//
+//        subpanel.setBounds(20, 100, 255, 250);
+//        add(subpanel);
 
+        SetPanelBound();
 
-        logo.setIcon(bluechess);
-        logo.setText(null);
+//        수행전 :
+//        logo.setIcon(bluechess);
+//        logo.setText(null);
 
-        newgame.setIcon(newgame1);
-        newgame.setText(null);
-        newgame.setToolTipText("New Game");
+        SetLogo();
 
+        SetNewgameEnvironment(handler);
 
-        newgame.addMouseListener(handler);
+        SetOptionsEnvironment(handler);
 
-        options.setIcon(options1);
-        options.setText(null);
-        options.setToolTipText("Options");
+        SetHelpEnvironment(handler);
 
-        options.addMouseListener(handler);
+        SetAboutEnvironment(handler);
 
-        help.setIcon(help1);
-        help.setText(null);
-        help.setToolTipText("Help");
+        SetExitEnvironment(handler);
 
-        help.addMouseListener(handler);
+        SetSingleEnvironment(handler);
 
-        about.setIcon(about1);
-        about.setText(null);
-        about.setToolTipText("About Game");
+        SetJoinEnvironment(handler);
 
-        about.addMouseListener(handler);
+        SetHostEnvironment(handler);
 
-        exit.setIcon(exit1);
-        exit.setText(null);
-        exit.setToolTipText("Exit From Game");
-
-        exit.addMouseListener(handler);
-
-        single.setIcon(single1);
-        single.setText(null);
-        single.setToolTipText("Play in same device");
-
-        single.addMouseListener(handler);
-
-        join.setIcon(join1);
-        join.setText(null);
-        join.setToolTipText("Join to play through BLUETOOTH");
-
-        join.addMouseListener(handler);
-
-        host.setIcon(host1);
-        host.setText(null);
-        host.setToolTipText("Host to play through BLUETOOTH");
-
-        host.addMouseListener(handler);
-
-        back.setIcon(back1);
-        back.setText(null);
-        back.setToolTipText("Back to MainMenu");
-
-        back.addMouseListener(handler);
+        SetBackEnvironment(handler);
 
         Point menuCenter = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
         //adjust the bound of frame by a simple logic
         //to center the frame window
+
+        //frame window를 만드는 함수를 추출합니다.
+        SetFrameWindow(menuCenter);
+
+    }
+
+    private void SetFrameWindow(Point menuCenter) {
         int menuWindowWidth = 300;
         int menuWindowHeight = 450;
         setBounds(menuCenter.x - menuWindowWidth / 2, menuCenter.y - menuWindowHeight / 2, menuWindowWidth, menuWindowHeight);
@@ -507,6 +498,120 @@ public class MainUI extends JFrame {
         mainpanel.setVisible(true);
         subpanel.setVisible(false);
         setVisible(true);
+    }
 
+    private void SetBackEnvironment(MouseHandler handler) {
+        back.setIcon(Back);
+        back.setText(null);
+        back.setToolTipText("Back to MainMenu");
+
+        back.addMouseListener(handler);
+    }
+
+    private void SetHostEnvironment(MouseHandler handler) {
+        host.setIcon(Host);
+        host.setText(null);
+        host.setToolTipText("Host to play through BLUETOOTH");
+
+        host.addMouseListener(handler);
+    }
+
+    private void SetJoinEnvironment(MouseHandler handler) {
+        join.setIcon(Join);
+        join.setText(null);
+        join.setToolTipText("Join to play through BLUETOOTH");
+
+        join.addMouseListener(handler);
+    }
+
+    private void SetSingleEnvironment(MouseHandler handler) {
+        single.setIcon(Single);
+        single.setText(null);
+        single.setToolTipText("Play in same device");
+
+        single.addMouseListener(handler);
+    }
+
+    private void SetExitEnvironment(MouseHandler handler) {
+        exit.setIcon(Exit);
+        exit.setText(null);
+        exit.setToolTipText("Exit From Game");
+
+        exit.addMouseListener(handler);
+    }
+
+    private void SetAboutEnvironment(MouseHandler handler) {
+        about.setIcon(About);
+        about.setText(null);
+        about.setToolTipText("About Game");
+
+        about.addMouseListener(handler);
+    }
+
+    private void SetHelpEnvironment(MouseHandler handler) {
+        help.setIcon(Help);
+        help.setText(null);
+        help.setToolTipText("Help");
+
+        help.addMouseListener(handler);
+    }
+
+    private void SetOptionsEnvironment(MouseHandler handler) {
+        options.setIcon(Options);
+        options.setText(null);
+        options.setToolTipText("Options");
+
+        options.addMouseListener(handler);
+    }
+
+    private void SetNewgameEnvironment(MouseHandler handler) {
+        newgame.setIcon(Newgame);
+        newgame.setText(null);
+        newgame.setToolTipText("New Game");
+
+
+        newgame.addMouseListener(handler);
+    }
+
+    private void SetLogo() {
+        logo.setIcon(bluechess);
+        logo.setText(null);
+    }
+
+    private void SetPanelBound() {
+        mainpanel.setBounds(20, 100, 255, 250);
+        add(mainpanel);
+
+        subpanel.setBounds(20, 100, 255, 250);
+        add(subpanel);
+    }
+
+    private void ShowModePage() {
+        Single = new ImageIcon(getClass().getResource("images2/single1.png")); // 수행전 : single1
+        OnMouseSingle = new ImageIcon(getClass().getResource("images2/single2.png")); // 수행전 : single2
+        Host = new ImageIcon(getClass().getResource("images2/host1.png")); // 수행전 : host1
+        OnMouseHost = new ImageIcon(getClass().getResource("images2/host2.png")); // 수행전 : host2
+        Join = new ImageIcon(getClass().getResource("images2/join1.png")); // 수행전 : join1
+        OnMouseJoin = new ImageIcon(getClass().getResource("images2/join2.png")); // 수행전 : join2
+        Back = new ImageIcon(getClass().getResource("images2/back1.png")); // 수행전 : back1
+        OnMouseBack = new ImageIcon(getClass().getResource("images2/back2.png")); // 수행전 : back2
+    }
+
+    private void ShowMenuPage() {
+        Newgame = new ImageIcon(getClass().getResource("images2/newgame1.png")); //수행전 : newgame1
+        OnMouseNewgame = new ImageIcon(getClass().getResource("images2/newgame2.png")); //수행전 : newgame2
+        Options = new ImageIcon(getClass().getResource("images2/options1.png")); // 수행전 : options1
+        OnMouseOptions = new ImageIcon(getClass().getResource("images2/options2.png")); // 수행전 : options2
+        Help = new ImageIcon(getClass().getResource("images2/help1.png")); // 수행전 : help1
+        OnMouseHelp = new ImageIcon(getClass().getResource("images2/help2.png")); // 수행전 : help2
+        About = new ImageIcon(getClass().getResource("images2/about1.png")); // 수행전 : about1
+        OnMouseAbout = new ImageIcon(getClass().getResource("images2/about2.png")); // 수행전 : about2
+        Exit = new ImageIcon(getClass().getResource("images2/exit1.png")); // 수행전 : exit1
+        OnMouseExit = new ImageIcon(getClass().getResource("images2/exit2.png")); // 수행전 : exit2
+    }
+
+    private void ShowBlueChessIcon() {
+        bluechess = new ImageIcon(getClass().getResource("images2/bluechess.png"));
     }
 }
+
